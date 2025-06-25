@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Виконання завдань</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .output {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+      width: fit-content;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Виконання завдань</h1>
+
+  <button onclick="showCurrentURL()">Показати поточний URL</button>
+  <div id="current-url" class="output"></div>
+
+  <button onclick="processArray()">Обробка масиву: map, filter, reduce</button>
+  <div id="array-result" class="output"></div>
+
+  <button onclick="multiplyWithSpread()">Помножити за допомогою Spread</button>
+  <div id="multiply-result" class="output"></div>
+
+  <button onclick="showSet()">Показати Set</button>
+  <div id="set-result" class="output"></div>
+
+  <button onclick="bindMethod()">Прив'язка методу за допомогою bind</button>
+  <div id="bind-result" class="output"></div>
+
+  <button onclick="createAdvancedCounterFunction()">Створити лічильник із замиканням</button>
+  <div id="counter-result" class="output"></div>
+
+  <script>
+    // Завдання 1
+    function showCurrentURL() {
+      (function() {
+        const currentURL = window.location.href;
+        document.getElementById('current-url').innerText = `Поточний URL: ${currentURL}`;
+      })();
+    }
+
+    // Завдання 2
+    function processArray() {
+      const numbers = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50];
+
+      
+      const doubledNumbers = numbers.map(num => num * 2);
+
+      
+      const numbersAbove25 = doubledNumbers.filter(num => num > 25);
+
+  
+      const sum = numbersAbove25.reduce((acc, num) => acc + num, 0);
+
+      document.getElementById('array-result').innerText = `Подвоєні числа: ${doubledNumbers.join(", ")}\nЧисла більше 25: ${numbersAbove25.join(", ")}\nСума: ${sum}`;
+    }
+
+    // Завдання 3
+    function multiply(a, b) {
+      return a * b;
+    }
+
+    function multiplyWithSpread() {
+      const numbers = [3, 4];
+      const result = multiply(...numbers);
+      document.getElementById('multiply-result').innerText = `Результат множення: ${result}`;
+    }
+
+    // Завдання 4
+    function showSet() {
+      const uniqueNumbers = new Set([10, 20, 30, 40, 30, 20, 50, 10]);
+
+      let setValues = '';
+      for (const value of uniqueNumbers) {
+        setValues += `${value}\n`;
+      }
+
+      document.getElementById('set-result').innerText = `Елементи Set без дублювання:\n${setValues}`;
+    }
+
+    // Завдання 5
+    const user = {
+      name: "John",
+      getName() {
+        return `Ім'я користувача: ${this.name}`;
+      }
+    };
+
+    const admin = {
+      name: "Admin"
+    };
+
+    function bindMethod() {
+      const boundMethod = user.getName.bind(admin);
+      document.getElementById('bind-result').innerText = boundMethod();
+    }
+
+    // Завдання 6
+    function createAdvancedCounter() {
+      let count = 0;
+      return {
+        increment() {
+          count++;
+          console.log(`Збільшення: ${count}`);
+        },
+        decrement() {
+          count--;
+          console.log(`Зменшення: ${count}`);
+        },
+        getCount() {
+          console.log(`Поточний лічильник: ${count}`);
+        }
+      };
+    }
+
+    function createAdvancedCounterFunction() {
+      const counter = createAdvancedCounter();
+      counter.increment(); 
+      counter.increment(); 
+      counter.decrement(); 
+      counter.getCount(); 
+
+      document.getElementById('counter-result').innerText = 'Лічильник запущений. Перевірте консоль для результату.';
+    }
+  </script>
+
+</body>
+</html>

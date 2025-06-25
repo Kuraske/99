@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .book, .user, .loan {
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #f9f9f9;
+        }
+        button {
+            padding: 10px 15px;
+            background: #5cb85c;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Library Management System</h1>
+</header>
+<div class="container">
+    <div id="app"></div>
+</div>
+<script>
+    class User {
+        constructor(id, name, email) {
+            this.id = id;
+            this.name = name;
+            this.email = email;
+        }
+    }
+
+    class Librarian extends User {
+        addBook(library, title, author) {
+            const newBook = new Book(title, author);
+            library.books.push(newBook);
+            alert(`Book '${title}' added to the library.`);
+        }
+
+        removeBook(library, title) {
+            const bookIndex = library.books.findIndex(book => book.title === title && book.isAvailable);
+            if (bookIndex !== -1) {
+                library.books.splice(bookIndex, 1);
+                alert(`Book '${title}' removed from the library.`);
+            } else {
+                alert(`Book '${title}' is not available or in use.`);
+            }
+        }
+    }
+
+    class Reader extends User {
+        borrowBook(library, title) {
+            const book = library.books.find(book => book.title === title && book.isAvailable);
+            if (book) {
+                const dueDate = new Date();
+                dueDate.setDate(dueDate.getDate() + 14);
+                const loan = new Loan(book, this, dueDate);
+                library.loans.push(loan);
+                book.borrow();
+                alert(`Book '${title}' borrowed. Return by ${dueDate.toLocaleDateString()}.`);
+            } else {
+                alert(`Book '${title}' is not available.`);
+            }
+        }
+
+        returnBook(library, title) {
+            const loanIndex = library.loans.findIndex(loan => loan.book.title === title && loan.reader === this);
+            if (loanIndex !== -1) {
+                const loan = library.loans[loanIndex];
+                loan.book.returnBook();
+                library.loans.splice(loanIndex, 1);
+                alert(`Book '${title}' returned.`);
+            } else {
+                alert(`Loan for book '${title}' not found.`);
+            }
+        }
+    }
+
+    class Book {
+        constructor(title, author) {
+            this.title = title;
+            this.author = author;
+            this.isAvailable = true;
+        }
+
+        borrow() {
+            this.isAvailable = false;
+        }
+
+        returnBook() {
+            this.isAvailable = true;
+        }
+    }
+
+    class Loan {
+        constructor(book, reader, dueDate) {
+            this.book = book;
+            this.reader = reader;
+            this.dueDate = dueDate;
+        }
+    }
+
+    class Library {
+        constructor() {
+            this.books = [];
+            this.users = [];
+            this.loans = [];
+        }
+
+        addUser(user) {
+            this.users.push(user);
+            alert(`User '${user.name}' added to the library.`);
+        }
+
+        checkOverdueLoans() {
+            const now = new Date();
+            const overdueLoans = this.loans.filter(loan => now > loan.dueDate);
+            if (overdueLoans.length > 0) {
+                overdueLoans.forEach(loan => {
+                    alert(`Book '${loan.book.title}' is overdue. Borrowed by: ${loan.reader.name}.`);
+                });
+            } else {
+                alert('No overdue loans.');
+            }
+        }
+    }
+
+    const library = new Library();
+    const librarian = new Librarian(1, 'Olena', 'olena@example.com');
+    const reader = new Reader(2, 'Ivan', 'ivan@example.com');
+
+    library.addUser(librarian);
+    library.addUser(reader);
+
+    librarian.addBook(library, 'Master and Margarita', 'Mikhail Bulgakov');
+    librarian.addBook(library, '1984', 'George Orwell');
+
+    reader.borrowBook(library, '1984');
+    reader.borrowBook(library, 'Master and Margarita');
+
+    library.checkOverdueLoans();
+
+    reader.returnBook(library, '1984');
+    library.checkOverdueLoans();
+
+    librarian.removeBook(library, '1984');
+</script>
+</body>
+</html>

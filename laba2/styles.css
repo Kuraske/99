@@ -1,0 +1,152 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Забезпечує, щоб body займав мінімум всю висоту */
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #333;
+    color: white;
+    padding: 1rem 2rem;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+nav a {
+    margin-left: 1rem;
+    text-decoration: none;
+    color: white;
+    font-size: 1rem;
+}
+
+main.layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr; /* Чотири рівні колонки */
+    gap: 1rem;
+    padding: 1rem;
+    flex-grow: 1; /* Дозволяє main заповнювати весь доступний простір */
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.column-left {
+    grid-column: 1 / 2;
+}
+
+.column-second {
+    grid-column: 2 / 3;
+}
+
+.column-third {
+    grid-column: 3 / 4;
+}
+
+.column-right {
+    grid-column: 4 / 5;
+}
+
+.top-boxes {
+    display: flex;
+    gap: 1rem;
+}
+
+.square {
+    width: 100%; /* Ширина блоку */
+    aspect-ratio: 1 / 1; /* Примусове збереження співвідношення сторін */
+    background: #ccc;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+.text-box {
+    flex: 1;
+    background: white;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.rectangle {
+    flex: 1;
+    background: #ccc;
+    height: calc(100% - 120px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    margin-top: auto; /* Це змушує футер завжди бути внизу */
+}
+
+.bottom-boxes {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.bottom-boxes div {
+    flex: 1;
+    background: #444;
+    color: white;
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+}
+
+/* Медіа-запит для мобільних екранів */
+@media (max-width: 768px) {
+    main.layout {
+        grid-template-columns: 1fr; /* Одна колонка на мобільних */
+    }
+
+    .top-boxes {
+        flex-direction: column; /* Перехід на колонку для top-boxes */
+    }
+
+    .column-left,
+    .column-second,
+    .column-third,
+    .column-right {
+        grid-column: 1 / -1; /* Всі колонки займають весь доступний простір */
+    }
+
+    footer {
+        margin-top: 1rem; /* Додаємо відступ між футером і контентом на мобільних */
+    }
+
+    .bottom-boxes {
+        flex-direction: column; /* Розташування блоків в bottom-boxes в одну колонку */
+    }
+
+    .bottom-boxes div {
+        margin-bottom: 1rem; /* Збільшуємо відстань між блоками */
+    }
+}
